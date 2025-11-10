@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "devCommand": "npm start",
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": "create-react-app",
+  "regions": ["iad1"],
+  "env": {
+    "REACT_APP_API_URL": "https://api-gateway-production.up.railway.app/api/v1"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_API_URL": "https://api-gateway-production.up.railway.app/api/v1"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
