@@ -1,0 +1,54 @@
+{
+  "name": "flight-booking-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise Flight Booking System with Microservices Architecture",
+  "workspaces": [
+    "services/*",
+    "apps/*",
+    "shared/*"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "dev": "concurrently \"npm run dev:auth\" \"npm run dev:user\" \"npm run dev:flight\" \"npm run dev:booking\" \"npm run dev:payment\" \"npm run dev:analytics\" \"npm run dev:notification\" \"npm run dev:audit\" \"npm run dev:web\"",
+    "dev:auth": "npm run dev --workspace=services/auth",
+    "dev:user": "npm run dev --workspace=services/user-management",
+    "dev:flight": "npm run dev --workspace=services/flight-search",
+    "dev:booking": "npm run dev --workspace=services/booking",
+    "dev:payment": "npm run dev --workspace=services/payment",
+    "dev:analytics": "npm run dev --workspace=services/analytics",
+    "dev:notification": "npm run dev --workspace=services/notification",
+    "dev:audit": "npm run dev --workspace=services/audit",
+    "dev:gateway": "npm run dev --workspace=services/api-gateway",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "build": "npm run build --workspaces",
+    "build:prod": "NODE_ENV=production npm run build --workspaces",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:integration": "jest --testPathPattern=integration",
+    "test:auth": "jest --testPathPattern=services/auth",
+    "test:booking": "jest --testPathPattern=services/booking",
+    "test:payment": "jest --testPathPattern=services/payment",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:build": "docker-compose build",
+    "docker:rebuild": "docker-compose down && docker-compose build && docker-compose up -d"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.45.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

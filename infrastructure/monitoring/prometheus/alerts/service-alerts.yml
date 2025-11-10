@@ -1,0 +1,138 @@
+groups:
+  - name: service_alerts
+    interval: 30s
+    rules:
+      # Service Down Alert
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Service {{ $labels.job }} has been down for more than 1 minute."
+
+      # High Error Rate
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status_code=~"5.."}[5m])) by (service)
+            /
+            sum(rate(http_requests_total[5m])) by (service)
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate on {{ $labels.service }}"
+          description: "Error rate is above 5% on {{ $labels.service }} (current: {{ $value | humanizePercentage }})"
+
+      # High Response Time
+      - alert: HighResponseTime
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (service, le)
+          ) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time on {{ $labels.service }}"
+          description: "95th percentile response time is above 1s on {{ $labels.service }} (current: {{ $value }}s)"
+
+      # High Memory Usage
+      - alert: HighMemoryUsage
+        expr: |
+          (
+            process_resident_memory_bytes / 1024 / 1024 / 1024
+          ) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.service }}"
+          description: "Memory usage is above 1GB on {{ $labels.service }} (current: {{ $value }}GB)"
+
+      # Database Connection Pool Exhaustion
+      - alert: DatabaseConnectionPoolExhausted
+        expr: |
+          (
+            sum(active_connections) by (service)
+            /
+            10  # Assuming max 10 connections per service
+          ) > 0.8
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Database connection pool near exhaustion on {{ $labels.service }}"
+          description: "Connection pool is 80% utilized on {{ $labels.service }}"
+
+  - name: business_alerts
+    interval: 30s
+    rules:
+      # High Payment Failure Rate
+      - alert: HighPaymentFailureRate
+        expr: |
+          (
+            sum(rate(payments_total{status="failed"}[10m]))
+            /
+            sum(rate(payments_total[10m]))
+          ) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High payment failure rate"
+          description: "Payment failure rate is above 10% (current: {{ $value | humanizePercentage }})"
+
+      # Unusual Booking Volume
+      - alert: UnusualBookingVolume
+        expr: |
+          abs(
+            rate(bookings_total[5m])
+            -
+            avg_over_time(rate(bookings_total[5m])[1h:5m])
+          ) / avg_over_time(rate(bookings_total[5m])[1h:5m]) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Unusual booking volume detected"
+          description: "Booking volume has deviated by more than 50% from the average"
+
+  - name: infrastructure_alerts
+    interval: 30s
+    rules:
+      # PostgreSQL Down
+      - alert: PostgreSQLDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL is down"
+          description: "PostgreSQL database has been down for more than 1 minute"
+
+      # Redis Down
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis is down"
+          description: "Redis cache has been down for more than 1 minute"
+
+      # High Database Query Time
+      - alert: HighDatabaseQueryTime
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(db_query_duration_seconds_bucket[5m])) by (service, le)
+          ) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High database query time on {{ $labels.service }}"
+          description: "95th percentile query time is above 500ms (current: {{ $value }}s)"

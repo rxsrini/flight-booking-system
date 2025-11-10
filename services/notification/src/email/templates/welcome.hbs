@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+    .feature-box { background: white; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #667eea; }
+    .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+    .btn { display: inline-block; background: #667eea; color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>✈️ Welcome to Flight Booking System!</h1>
+    <p>Your account has been successfully created</p>
+  </div>
+
+  <div class="content">
+    <p>Dear {{name}},</p>
+
+    <p>Welcome aboard! We're excited to have you as part of our Flight Booking System community.</p>
+
+    <p>Your account has been created with the role: <strong>{{role}}</strong></p>
+
+    <h3>What's next?</h3>
+
+    <div class="feature-box">
+      <h4 style="margin-top: 0; color: #667eea;">🔍 Search Flights</h4>
+      <p style="margin-bottom: 0;">Search from thousands of flights across multiple airlines and find the best deals.</p>
+    </div>
+
+    <div class="feature-box">
+      <h4 style="margin-top: 0; color: #667eea;">📅 Make Bookings</h4>
+      <p style="margin-bottom: 0;">Book flights quickly and securely with our streamlined booking process.</p>
+    </div>
+
+    <div class="feature-box">
+      <h4 style="margin-top: 0; color: #667eea;">💳 Secure Payments</h4>
+      <p style="margin-bottom: 0;">Your payment information is protected with industry-leading encryption.</p>
+    </div>
+
+    <div class="feature-box">
+      <h4 style="margin-top: 0; color: #667eea;">📊 Track Your Bookings</h4>
+      <p style="margin-bottom: 0;">Manage all your bookings in one place with real-time updates.</p>
+    </div>
+
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="{{loginUrl}}" class="btn">Get Started</a>
+    </div>
+
+    <p>If you have any questions or need assistance, our support team is here to help!</p>
+
+    <p>Happy travels!</p>
+  </div>
+
+  <div class="footer">
+    <p>This is an automated message. Please do not reply to this email.</p>
+    <p>For support, please contact us at support@flightbooking.com</p>
+    <p>&copy; 2024 Flight Booking System. All rights reserved.</p>
+  </div>
+</body>
+</html>
