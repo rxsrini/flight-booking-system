@@ -15,6 +15,7 @@ import BookingDetails from './pages/bookings/BookingDetails';
 import MyBookings from './pages/bookings/MyBookings';
 import Profile from './pages/profile/Profile';
 import NotFound from './pages/NotFound';
+import { useAuth } from './contexts/AuthContext';
 
 const theme = createTheme({
   palette: {
@@ -113,8 +114,5 @@ function DashboardRouter() {
       return <Navigate to="/login" />;
   }
 }
-
-// Import useAuth hook
-import { useAuth } from './contexts/AuthContext';
 
 export default App;
